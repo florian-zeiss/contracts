@@ -92,7 +92,7 @@ function formNewContract() #liefert das Formular als String
 
 function readFromDB ($sqlStmt)  //fuehrt ein select auf der DB aus und liefert 
 {                              //das Ergebnis als Array
-    $con = mysql_connect("localhost","contracts","contract!");
+    $con = mysql_connect("localhost","username","password");
     if (!$con)
         {
         die('Could not connect: ' . mysql_error());
@@ -184,7 +184,7 @@ function writeICS ($CName, $file)
 
 function updateDB ($sqlStmt)   //fuehrt ein update auf der DB aus
 {
-   $con = mysql_connect("localhost","contracts","contract!");
+   $con = mysql_connect("localhost","username","password");
     if (!$con)
         {
         die('Could not connect: ' . mysql_error());
@@ -200,7 +200,7 @@ mysql_close($con);
 
 function insertToDB ($sqlStmt)   //fuehrt ein insert auf der DB aus
 {
-    $con = mysql_connect("localhost","contracts","contract!");
+    $con = mysql_connect("localhost","username","password");
     if (!$con)
         {
         die('Could not connect: ' . mysql_error());
