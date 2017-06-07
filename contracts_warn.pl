@@ -18,10 +18,11 @@ my $pw = "password!";
 # name		VARCHAR		1
 # firma		VARCHAR		2
 # nummer	VARCHAR		3
-# ende		DATE		4
-# frist		INT			5
-# kosten	FLOAT		6
-# email		VARCHAR		7
+# begin		DATE		4
+# ende		DATE		5
+# frist		INT			6
+# kosten	FLOAT		7
+# email		VARCHAR		8
 
 #DSN = Data Source Name
 my $dsn = "dbi:mysql:$database:$host:3306";
@@ -37,7 +38,7 @@ $sth->execute;
 
 #now iterate the result and find the contracts that are about to end
 while(@row = $sth->fetchrow_array()) {
-	if(calculate($row[4], $row[5]) == 1)
+	if(calculate($row[5], $row[6]) == 1)
 		{			#print "Zeit für einen Wechsel.\n";}
 		sendMsg(@row);
 		}
@@ -62,9 +63,9 @@ sub sendMsg {
 	my $id = $_[0];
 	my $name = $_[1];
 	my $firma = $_[2];
-	my $ende = $_[4];
-	my $kosten = $_[6];
-	my $email = $_[7];
+	my $ende = $_[5];
+	my $kosten = $_[7];
+	my $email = $_[8];
 
 	my $message = Email::MIME->create(
 	  header_str => [

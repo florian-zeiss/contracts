@@ -11,6 +11,7 @@
 # ende		date					Wann endet der Vertrag theoretisch
 # frist		INT						Wie lang ist die Kündigungsfrist
 # kosten	float					Wie hoch sind die Kosten im Monat
+# email		varchar					An welche Adresse soll eine Mail geschickt werden?
 
 #Hier sind die Daten für die Verbindung zur Datenbank hinterlegt
 $host = "localhost";
