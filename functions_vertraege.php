@@ -1,5 +1,22 @@
 <?php
 
+
+#Datenbankschema:
+# id		INT		Primary Key		ID des Vertrages, interner Wert
+# name		varchar					Worum geht es bei diesem Vertrag?
+# firma		varchar					Bei welcher Firma ist er abgeschlossen
+# nummer	varchar					Welche Vertragsnummer/Kundennummer haben wir
+# beginn	date					Wann hat der Vertrag begonnen
+# ende		date					Wann endet der Vertrag theoretisch
+# frist		INT						Wie lang ist die Kündigungsfrist
+# kosten	float					Wie hoch sind die Kosten im Monat
+
+#Hier sind die Daten für die Verbindung zur Datenbank hinterlegt
+$host = "localhost";
+$user = "username";
+$pass = "password";
+
+
 function formSearchContracts () #liefert das Formular als String
 {$retval = "<p> <h2> Suche &uuml;ber alle Vertr&auml;ge</h2></p>";
  $retval = $retval . "<form action=\"index.php\" method=\"get\" >";
@@ -55,16 +72,16 @@ function formEditContract($contract){
     $retval = $retval . "</p> </form>";
     
 #Jetzt noch die Dateien...
-    $media = getMedia($contract, $CDir);
-    foreach ($media as $file) {
-       
-        $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
-    }
-    $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="CName" value="' . $contract . '"><br>
-            <input type="file" name="datei"><br>
-            <input type="submit" value="Datei Hochladen">
-        </form>';
+ #   $media = getMedia($contract, $CDir);
+ #   foreach ($media as $file) {
+ #      
+ #       $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
+ #   }
+ #   $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
+ #           <input type="hidden" name="CName" value="' . $contract . '"><br>
+ #           <input type="file" name="datei"><br>
+ #           <input type="submit" value="Datei Hochladen">
+ #       </form>';
     
     return $retval; 
 }
@@ -72,7 +89,7 @@ function formNewContract() #liefert das Formular als String
 {
     $retval = "<p> <h2>Neuer Vertrag</h2></p>";
     $retval = $retval . "<form action=\"input.php\" method=\"post\" >";
-    $retval = $retval . "<p>Name des Vertrages:";
+    $retval = $retval . "<p>Art des Vertrages:";
     $retval = $retval . "<input type=\"text\" name=\"name\" />";
     $retval = $retval . "<p>Nummer des Vertrages:";
     $retval = $retval . "<input type=\"text\" name=\"number\" />";
@@ -84,6 +101,7 @@ function formNewContract() #liefert das Formular als String
     $retval = $retval . "<input type=\"text\" name=\"frist\" />";
     $retval = $retval . "<p>Monatliche Kosten des Vertrages:";
     $retval = $retval . "<input type=\"text\" name=\"monthly\" />";
+    #Media wird hier nicht benötigt...
     #$retval = $retval . "<input type=\"file\" name=\"datei\"><br>";
     $retval = $retval . "<p><input type=\"submit\" value=\"absenden\" />";
     $retval = $retval . "</p> </form>";
@@ -91,7 +109,8 @@ function formNewContract() #liefert das Formular als String
 }
 
 function readFromDB ($sqlStmt)  //fuehrt ein select auf der DB aus und liefert 
-{                              //das Ergebnis als Array
+{        //das Ergebnis als Array
+//	$con = getCon();
     $con = mysql_connect("localhost","username","password");
     if (!$con)
         {
@@ -143,16 +162,16 @@ function showContract($exid){   //Bereitet einen Vertrag zur Ansicht auf
     $retval = makeTable($answer, "contracts", "edit");
     #$media = $answer[0]["media"];
     #print "trying to get media...<br>";
-    $media = getMedia($exid, $CDir);
-    foreach ($media as $file) {
+    #$media = getMedia($exid, $CDir);
+    #foreach ($media as $file) {
        
-        $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
-    }
-    $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="CName" value="' . $exid . '"><br>
-            <input type="file" name="datei"><br>
-            <input type="submit" value="Datei Hochladen">
-        </form>';
+    #    $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
+    #}
+    #$retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
+    #        <input type="hidden" name="CName" value="' . $exid . '"><br>
+    #        <input type="file" name="datei"><br>
+    #        <input type="submit" value="Datei Hochladen">
+    #    </form>';
     #print_r($media);
     
     return $retval;
@@ -246,6 +265,17 @@ function getRow ($DBRow,$typ, $link) {     //erzeugt aus einer DBZeile eine Tabe
     }
     $retval = $retval . "</tr>";
     return $retval;
+}
+
+function getCon () {
+	$con = mysql_connect($host,$user,$pass);
+	if (!$con)
+	{
+		die('Could not connect: ' . mysql_error());
+	}
+	
+	mysql_select_db("contracts", $con);
+	return $con;
 }
 
 function evaluateForm(){         //Hier werden die Eingaben geprueft, damit
