@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 
 
 #Datenbankschema:
@@ -18,6 +19,10 @@ $pass = "password";
 
 
 function formSearchContracts () #liefert das Formular als String
+=======
+#Liefert das Formular zur Suche nach einem Vertrag als String.
+function formSearchContracts () 
+>>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
 {$retval = "<p> <h2> Suche &uuml;ber alle Vertr&auml;ge</h2></p>";
  $retval = $retval . "<form action=\"index.php\" method=\"get\" >";
  $retval = $retval . "<p>Name:";
@@ -29,17 +34,8 @@ function formSearchContracts () #liefert das Formular als String
     
 }
 
-function formNewUser() #liefert das Formular als String
-{
-    $retval = "<p> <h2>Neuer Benutzer</h2></p>";
-    $retval = $retval . "<form action=\"input.php\" method=\"post\" >";
-    $retval = $retval . "<p>Name des Benutzers:";
-    $retval = $retval . "<input type=\"text\" name=\"name\" />";
-    $retval = $retval . "<p>Passwort:";
-    $retval = $retval . "<input type=\"text\" name=\"pass1\" />";
-    $retval = $retval . "<p>Best&auml;tigung des Passworts:";
-    $retval = $retval . "<input type=\"text\" name=\"pass2\" />";
-}
+#Liefert das Formular zum aendern eines Vertrages als String
+#Wobei die bisherigen Werte in die Felder gefuellt werden.
 function formEditContract($contract){
     #Erst mal die Werte holen...
     $contractsDir= "/data/" . $contract;
@@ -71,6 +67,7 @@ function formEditContract($contract){
     $retval = $retval . "<p><input type=\"reset\" value=\"abbrechen\" />";
     $retval = $retval . "</p> </form>";
     
+<<<<<<< HEAD
 #Jetzt noch die Dateien...
  #   $media = getMedia($contract, $CDir);
  #   foreach ($media as $file) {
@@ -82,10 +79,25 @@ function formEditContract($contract){
  #           <input type="file" name="datei"><br>
  #           <input type="submit" value="Datei Hochladen">
  #       </form>';
+=======
+    //TODO//
+#Jetzt noch die Dateien...bin mir nicht sicher, ob ich die noch brauche.
+    $media = getMedia($contract, $CDir);
+    foreach ($media as $file) {
+       
+        $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
+    }
+    $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="CName" value="' . $contract . '"><br>
+            <input type="file" name="datei"><br>
+            <input type="submit" value="Datei Hochladen">
+        </form>';
+>>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
     
     return $retval; 
 }
-function formNewContract() #liefert das Formular als String
+#Liefert das Formular zum eintragen eines neuen Vertrages als String
+function formNewContract() 
 {
     $retval = "<p> <h2>Neuer Vertrag</h2></p>";
     $retval = $retval . "<form action=\"input.php\" method=\"post\" >";
@@ -108,17 +120,36 @@ function formNewContract() #liefert das Formular als String
     return $retval;
 }
 
+<<<<<<< HEAD
 function readFromDB ($sqlStmt)  //fuehrt ein select auf der DB aus und liefert 
 {        //das Ergebnis als Array
 //	$con = getCon();
     $con = mysql_connect("localhost","username","password");
+=======
+#Liefert eine Datenbankverbindung auf die Vertragsdatenbank
+function getDBCon ()
+{
+    #Festlegen des Datenbankzuganges
+    $host = "localhost";
+    $username = "username";
+    $password = "password";
+    $database = "contracts";
+    #Aufbauen der Verbindung
+    $con = mysql_connect($host, $username, $password);
+>>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
     if (!$con)
         {
         die('Could not connect: ' . mysql_error());
         }
+        #Auswaehlen der Datenbank
+        mysql_select_db($database, $con);
+    return $con;
+}
 
-    mysql_select_db("contracts", $con);
-
+//fuehrt ein select auf der DB aus und liefert 
+//das Ergebnis als Array
+function readFromDB ($sqlStmt)  {
+    $con = getDBCon(); 
     $result = mysql_query($sqlStmt);
     $i = 0;
     $array[0] = "";
@@ -134,15 +165,8 @@ function readFromDB ($sqlStmt)  //fuehrt ein select auf der DB aus und liefert
     
 }
 
-function getUser ($userName){   //liefert die UserID zu einem Usernamen
-    $sql = 'select id from users where name = "' . $userName . '"';
-    $answer = readFromDB($sql);
-    $retVal = $answer[0][0];
-    
-    return $retVal;
-}
-
-function getContracts (){    //liefert alle Vertraege als Array
+//liefert alle Vertraege als Array
+function getContracts (){    
     $sql = 'select * from contracts';
     $answer = readFromDB($sql);
     #print "answer is: ";
@@ -151,15 +175,15 @@ function getContracts (){    //liefert alle Vertraege als Array
     return $retval;
 }
 
-function showContract($exid){   //Bereitet einen Vertrag zur Ansicht auf
+//Bereitet einen Vertrag zur Ansicht auf.
+//Erwartet eine Vertrags-ID
+function showContract($exid){   
     $contractsDir= "/data/" . $exid;
     $CDir = getcwd() . $contractsDir;
     $sql = 'select * from contracts where name like "' . $exid .'"';
-    #print $sql . "<br>";
     $answer = readFromDB($sql);
-    #print_r($answer);
-    #print "making table for $exid<br>";
     $retval = makeTable($answer, "contracts", "edit");
+<<<<<<< HEAD
     #$media = $answer[0]["media"];
     #print "trying to get media...<br>";
     #$media = getMedia($exid, $CDir);
@@ -172,60 +196,62 @@ function showContract($exid){   //Bereitet einen Vertrag zur Ansicht auf
     #        <input type="file" name="datei"><br>
     #        <input type="submit" value="Datei Hochladen">
     #    </form>';
+=======
+   # $media = getMedia($exid, $CDir);
+   # foreach ($media as $file) {
+       
+   #     $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
+   # }
+    $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="CName" value="' . $exid . '"><br>
+            <input type="file" name="datei"><br>
+            <input type="submit" value="Datei Hochladen">
+        </form>';
+>>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
     #print_r($media);
     
     return $retval;
     
 }
 
-function getMedia($cname, $CDir){
+#function getMedia($cname, $CDir){
     #print "getMedia called...<br>";
-    $retval = array();
+#    $retval = array();
     #print $contractsDir . $cname;
     #print $CDir;
-    if ($handle = opendir($CDir)) {
-    while (false !== ($file = readdir($handle))) {
-        if ($file != "." && $file != "..") {
-            $retval[] = $file;
-        }
-    }
-    closedir($handle);
-}
+#    if ($handle = opendir($CDir)) {
+#    while (false !== ($file = readdir($handle))) {
+#        if ($file != "." && $file != "..") {
+#            $retval[] = $file;
+#        }
+#    }
+#    closedir($handle);
+#}
    # $retval = $MList;
-    return $retval;
-}
+#    return $retval;
+#}
 
-function writeICS ($CName, $file)
-{
+#function writeICS ($CName, $file)
+#{
     
-}
+#}
 
-
-function updateDB ($sqlStmt)   //fuehrt ein update auf der DB aus
+//fuehrt ein update auf der DB aus
+//Erwartet den vollständig vorbereiteten SQL-String
+function updateDB ($sqlStmt)   
 {
-   $con = mysql_connect("localhost","username","password");
-    if (!$con)
-        {
-        die('Could not connect: ' . mysql_error());
-        }
-
-    mysql_select_db("contracts", $con);
+   $con = getDBCon();
     if (!mysql_query($sqlStmt,$con))
   {
   die('Error: ' . mysql_error());
   }
 mysql_close($con); 
 }
-
-function insertToDB ($sqlStmt)   //fuehrt ein insert auf der DB aus
+//fuehrt ein insert auf der DB aus
+//Erwartet den vollständig vorbereiteten SQL-String
+function insertToDB ($sqlStmt)   
 {
-    $con = mysql_connect("localhost","username","password");
-    if (!$con)
-        {
-        die('Could not connect: ' . mysql_error());
-        }
-
-    mysql_select_db("contracts", $con);
+    $con = getDBCon();
     if (!mysql_query($sqlStmt,$con))
   {
   die('Error: ' . mysql_error());
@@ -233,9 +259,10 @@ function insertToDB ($sqlStmt)   //fuehrt ein insert auf der DB aus
 mysql_close($con);
 }
 
-function makeTable ($array,$type, $link) {   //erzeugt aus einem Array eine Tabelle
-                                      //ruft dazu getRow auf jeder Zeile auf
-                                      //und unterscheidet nach Typ der Tabelle
+//erzeugt aus einem Array eine Tabelle
+//ruft dazu getRow auf jeder Zeile auf
+//und unterscheidet nach Typ der Tabelle, wobei es hier nur Vertraege gibt
+function makeTable ($array,$type, $link) {   
    
     if ($type == "contracts")
     {
@@ -245,20 +272,16 @@ function makeTable ($array,$type, $link) {   //erzeugt aus einem Array eine Tabe
     }
     
     $anzahl = count($array);
-    #print "anzahl = $count<br>";
     for ($x = 0; $x < $anzahl; $x++){
         $retval = $retval . getRow($array[$x],"td", $link)."</tr>";
     }
     $retval = $retval . "</table>";
-    //print "Anzahl: $anzahl<br>";
     return $retval;
 }
-
-function getRow ($DBRow,$typ, $link) {     //erzeugt aus einer DBZeile eine Tabellen-
-    $retval ="<tr>";                    //zeile des gewuenschten Typs
+//erzeugt aus einer DBZeile eine Tabellenzeile des gewuenschten Typs (td oder th)
+function getRow ($DBRow,$typ, $link) {     
+    $retval ="<tr>";                    
     $count = count($DBRow);
-    #print "count: $count<br>";
-    #print_r($DBRow);
     for ($i = 0; $i < $count/2 ; $i++){
         if($i == 0){$retval = $retval . "<" . $typ . "><a href=\"./index.php?$link=" . $DBRow[0] . "\">" . htmlentities($DBRow[$i]) . "</a></" . $typ . ">";}
         else{$retval = $retval . "<" . $typ . ">" . htmlentities($DBRow[$i]) . "</" . $typ . ">";}
@@ -266,6 +289,7 @@ function getRow ($DBRow,$typ, $link) {     //erzeugt aus einer DBZeile eine Tabe
     $retval = $retval . "</tr>";
     return $retval;
 }
+<<<<<<< HEAD
 
 function getCon () {
 	$con = mysql_connect($host,$user,$pass);
@@ -280,6 +304,12 @@ function getCon () {
 
 function evaluateForm(){         //Hier werden die Eingaben geprueft, damit
                                  //SQL-Injection verhindert werden kann
+=======
+//TODO//
+//Hier werden die Eingaben geprueft, damit
+//SQL-Injection verhindert werden kann
+function evaluateForm(){         
+>>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
     $kategorie = $_POST[kategorie];
     $material = $_POST[material];
     $schlagwort = $_POST[schlagwort];

@@ -3,6 +3,7 @@ Webbasierte Verwaltung der eigenen Verträge
 Verträge werden dabei in einer MySQL-Datenbank gespeichert.
 Die Datei contracts_warn.pl ist als Cronjob gedacht, um die DB regelmäßig zu scannen
 und im Bedarfsfall eine Mail abzuschicken.
+<<<<<<< HEAD
 #Datenbankschema:
 # id		INT		Primary Key		ID des Vertrages, interner Wert
 # name		varchar					Worum geht es bei diesem Vertrag?
@@ -12,3 +13,8 @@ und im Bedarfsfall eine Mail abzuschicken.
 # ende		date					Wann endet der Vertrag theoretisch
 # frist		INT						Wie lang ist die Kündigungsfrist
 # kosten	float					Wie hoch sind die Kosten im Monat
+=======
+Neustrukturierung der functions.php um etwas mehr Uebersichtlichkeit zu bekommen.
+Datenbankzugriff wird zentralisiert, so das auch nur an einer Stelle der Zugriff
+parametrisiert werden muss.
+>>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
