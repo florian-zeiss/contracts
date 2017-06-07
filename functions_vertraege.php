@@ -67,17 +67,6 @@ function formEditContract($contract){
     $retval = $retval . "</p> </form>";
     
 
-#Jetzt noch die Dateien...
- #   $media = getMedia($contract, $CDir);
- #   foreach ($media as $file) {
- #      
- #       $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
- #   }
- #   $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
- #           <input type="hidden" name="CName" value="' . $contract . '"><br>
- #           <input type="file" name="datei"><br>
- #           <input type="submit" value="Datei Hochladen">
- #       </form>';
 
     //TODO//
 #Jetzt noch die Dateien...bin mir nicht sicher, ob ich die noch brauche.
@@ -95,6 +84,8 @@ function formEditContract($contract){
     
     return $retval; 
 }
+
+
 #Liefert das Formular zum eintragen eines neuen Vertrages als String
 function formNewContract() 
 {
@@ -112,8 +103,6 @@ function formNewContract()
     $retval = $retval . "<input type=\"text\" name=\"frist\" />";
     $retval = $retval . "<p>Monatliche Kosten des Vertrages:";
     $retval = $retval . "<input type=\"text\" name=\"monthly\" />";
-    #Media wird hier nicht benötigt...
-    #$retval = $retval . "<input type=\"file\" name=\"datei\"><br>";
     $retval = $retval . "<p><input type=\"submit\" value=\"absenden\" />";
     $retval = $retval . "</p> </form>";
     return $retval;
@@ -123,9 +112,9 @@ function formNewContract()
 function getDBCon ()
 {
     #Festlegen des Datenbankzuganges
-    $host = "localhost";
-    $username = "username";
-    $password = "password";
+    #$host = "localhost";
+    #$username = "username";
+    #$password = "password";
     $database = "contracts";
     #Aufbauen der Verbindung
     $con = mysql_connect($host, $username, $password);
@@ -139,8 +128,8 @@ function getDBCon ()
     return $con;
 }
 
-//fuehrt ein select auf der DB aus und liefert 
-//das Ergebnis als Array
+#fuehrt ein select auf der DB aus und liefert 
+#das Ergebnis als Array
 function readFromDB ($sqlStmt)  {
     $con = getDBCon(); 
     $result = mysql_query($sqlStmt);
@@ -153,9 +142,7 @@ function readFromDB ($sqlStmt)  {
     }
     mysql_close($con);
     #print_r($array);    
-    return $array;
-    
-    
+    return $array;  
 }
 
 //liefert alle Vertraege als Array
@@ -176,58 +163,14 @@ function showContract($exid){
     $sql = 'select * from contracts where name like "' . $exid .'"';
     $answer = readFromDB($sql);
     $retval = makeTable($answer, "contracts", "edit");
-
-    #$media = $answer[0]["media"];
-    #print "trying to get media...<br>";
-    #$media = getMedia($exid, $CDir);
-    #foreach ($media as $file) {
-       
-    #    $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
-    #}
-    #$retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
-    #        <input type="hidden" name="CName" value="' . $exid . '"><br>
-    #        <input type="file" name="datei"><br>
-    #        <input type="submit" value="Datei Hochladen">
-    #    </form>';
-
-   # $media = getMedia($exid, $CDir);
-   # foreach ($media as $file) {
-       
-   #     $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
-   # }
     $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="CName" value="' . $exid . '"><br>
             <input type="file" name="datei"><br>
             <input type="submit" value="Datei Hochladen">
         </form>';
-
-    #print_r($media);
     
     return $retval;
-    
 }
-
-#function getMedia($cname, $CDir){
-    #print "getMedia called...<br>";
-#    $retval = array();
-    #print $contractsDir . $cname;
-    #print $CDir;
-#    if ($handle = opendir($CDir)) {
-#    while (false !== ($file = readdir($handle))) {
-#        if ($file != "." && $file != "..") {
-#            $retval[] = $file;
-#        }
-#    }
-#    closedir($handle);
-#}
-   # $retval = $MList;
-#    return $retval;
-#}
-
-#function writeICS ($CName, $file)
-#{
-    
-#}
 
 //fuehrt ein update auf der DB aus
 //Erwartet den vollständig vorbereiteten SQL-String
@@ -271,6 +214,8 @@ function makeTable ($array,$type, $link) {
     $retval = $retval . "</table>";
     return $retval;
 }
+
+
 //erzeugt aus einer DBZeile eine Tabellenzeile des gewuenschten Typs (td oder th)
 function getRow ($DBRow,$typ, $link) {     
     $retval ="<tr>";                    
