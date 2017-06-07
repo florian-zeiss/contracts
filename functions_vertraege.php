@@ -1,5 +1,5 @@
 <?php
-<<<<<<< HEAD
+
 
 
 #Datenbankschema:
@@ -18,11 +18,10 @@ $user = "username";
 $pass = "password";
 
 
-function formSearchContracts () #liefert das Formular als String
-=======
+
 #Liefert das Formular zur Suche nach einem Vertrag als String.
 function formSearchContracts () 
->>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
+
 {$retval = "<p> <h2> Suche &uuml;ber alle Vertr&auml;ge</h2></p>";
  $retval = $retval . "<form action=\"index.php\" method=\"get\" >";
  $retval = $retval . "<p>Name:";
@@ -67,7 +66,7 @@ function formEditContract($contract){
     $retval = $retval . "<p><input type=\"reset\" value=\"abbrechen\" />";
     $retval = $retval . "</p> </form>";
     
-<<<<<<< HEAD
+
 #Jetzt noch die Dateien...
  #   $media = getMedia($contract, $CDir);
  #   foreach ($media as $file) {
@@ -79,20 +78,20 @@ function formEditContract($contract){
  #           <input type="file" name="datei"><br>
  #           <input type="submit" value="Datei Hochladen">
  #       </form>';
-=======
+
     //TODO//
 #Jetzt noch die Dateien...bin mir nicht sicher, ob ich die noch brauche.
-    $media = getMedia($contract, $CDir);
-    foreach ($media as $file) {
+ #   $media = getMedia($contract, $CDir);
+ #   foreach ($media as $file) {
        
-        $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
-    }
-    $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="CName" value="' . $contract . '"><br>
-            <input type="file" name="datei"><br>
-            <input type="submit" value="Datei Hochladen">
-        </form>';
->>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
+ #       $retval = $retval . '<a href=".' . $contractsDir. "/" . $file . '">' . $file . '</a><br>';        
+ #   }
+ #   $retval = $retval . '<form action="upload.php" method="post" enctype="multipart/form-data">
+ #           <input type="hidden" name="CName" value="' . $contract . '"><br>
+ #           <input type="file" name="datei"><br>
+ #           <input type="submit" value="Datei Hochladen">
+ #       </form>';
+
     
     return $retval; 
 }
@@ -120,12 +119,6 @@ function formNewContract()
     return $retval;
 }
 
-<<<<<<< HEAD
-function readFromDB ($sqlStmt)  //fuehrt ein select auf der DB aus und liefert 
-{        //das Ergebnis als Array
-//	$con = getCon();
-    $con = mysql_connect("localhost","username","password");
-=======
 #Liefert eine Datenbankverbindung auf die Vertragsdatenbank
 function getDBCon ()
 {
@@ -136,7 +129,7 @@ function getDBCon ()
     $database = "contracts";
     #Aufbauen der Verbindung
     $con = mysql_connect($host, $username, $password);
->>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
+
     if (!$con)
         {
         die('Could not connect: ' . mysql_error());
@@ -183,7 +176,7 @@ function showContract($exid){
     $sql = 'select * from contracts where name like "' . $exid .'"';
     $answer = readFromDB($sql);
     $retval = makeTable($answer, "contracts", "edit");
-<<<<<<< HEAD
+
     #$media = $answer[0]["media"];
     #print "trying to get media...<br>";
     #$media = getMedia($exid, $CDir);
@@ -196,7 +189,7 @@ function showContract($exid){
     #        <input type="file" name="datei"><br>
     #        <input type="submit" value="Datei Hochladen">
     #    </form>';
-=======
+
    # $media = getMedia($exid, $CDir);
    # foreach ($media as $file) {
        
@@ -207,7 +200,7 @@ function showContract($exid){
             <input type="file" name="datei"><br>
             <input type="submit" value="Datei Hochladen">
         </form>';
->>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
+
     #print_r($media);
     
     return $retval;
@@ -289,7 +282,7 @@ function getRow ($DBRow,$typ, $link) {
     $retval = $retval . "</tr>";
     return $retval;
 }
-<<<<<<< HEAD
+
 
 function getCon () {
 	$con = mysql_connect($host,$user,$pass);
@@ -304,12 +297,12 @@ function getCon () {
 
 function evaluateForm(){         //Hier werden die Eingaben geprueft, damit
                                  //SQL-Injection verhindert werden kann
-=======
+
 //TODO//
 //Hier werden die Eingaben geprueft, damit
 //SQL-Injection verhindert werden kann
-function evaluateForm(){         
->>>>>>> 39039d326f491ee0e41cf36bc09e90fcfdf1a595
+       
+
     $kategorie = $_POST[kategorie];
     $material = $_POST[material];
     $schlagwort = $_POST[schlagwort];
@@ -319,4 +312,5 @@ function evaluateForm(){
     
     return $retval;
 }
+
 ?>
