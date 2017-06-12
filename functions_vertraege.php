@@ -131,6 +131,7 @@ function getDBCon ()
 
 #fuehrt ein select auf der DB aus und liefert 
 #das Ergebnis als Array
+#erwartet den vollstaendigen sql-string
 function readFromDB ($sqlStmt)  {
     $con = getDBCon(); 
     $result = mysql_query($sqlStmt);
@@ -229,17 +230,17 @@ function getRow ($DBRow,$typ, $link) {
     return $retval;
 }
 
-
-function getCon () {
-	$con = mysql_connect($host,$user,$pass);
-	if (!$con)
-	{
-		die('Could not connect: ' . mysql_error());
-	}
+#
+// function getCon () {
+// 	$con = mysql_connect($host,$user,$pass);
+// 	if (!$con)
+// 	{
+// 		die('Could not connect: ' . mysql_error());
+// 	}
 	
-	mysql_select_db("contracts", $con);
-	return $con;
-}
+// 	mysql_select_db("contracts", $con);
+// 	return $con;
+// }
 
 function evaluateForm(){         //Hier werden die Eingaben geprueft, damit
                                  //SQL-Injection verhindert werden kann
